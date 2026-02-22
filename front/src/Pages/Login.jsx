@@ -5,6 +5,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import Alert from '../Components/Alert';
 
 function Login({ setIsAuth }) {
+    localStorage.setItem('lastaccess', '/login')
+
     const [showPass, setShowPass] = useState(false);
 
     const [email, setEmail] = useState("");
@@ -26,7 +28,12 @@ function Login({ setIsAuth }) {
 
             const { token } = response.data;
 
+            const username = response.data.user.nome
+            const useremail = response.data.user.email
+
             localStorage.setItem('token', token);
+            localStorage.setItem('loggedUsername', username);
+            localStorage.setItem('loggedEmail', useremail);
 
             console.log("Login realizado com sucesso!");
 
@@ -40,16 +47,21 @@ function Login({ setIsAuth }) {
 
             setTimeout(() => {
                 navigate('/');
-            }, 1000);
+            }, 2000);
 
         } catch (error) {
-            console.error(error.message);
+            const msg =
+                error.response?.data?.msg || "Erro ao cadastrar!";
 
             setAlert({
                 show: true,
                 type: "error",
-                message: "Erro de login!"
-            })
+                message: msg
+            });
+
+            setTimeout(() => {
+                setAlert(prev => ({ ...prev, show: false }));
+            }, 3000);
         }
     }
 
@@ -81,7 +93,7 @@ function Login({ setIsAuth }) {
                             className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
                             type="email"
                             placeholder="Digite seu email"
-                            onChange={(e)=>setEmail(e.target.value)}
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </div>
@@ -100,7 +112,7 @@ function Login({ setIsAuth }) {
                                 type={showPass ? "text" : "password"}
                                 placeholder="Digite sua senha"
                                 minLength={6}
-                                onChange={(e)=>setSenha(e.target.value)}
+                                onChange={(e) => setSenha(e.target.value)}
                                 required
                             />
 

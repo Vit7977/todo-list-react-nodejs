@@ -1,10 +1,13 @@
 import { useState } from "react";
-import axios from 'axios';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import Alert from '../Components/Alert';
 
 function Cadastrar() {
+    const location = useLocation();
+    localStorage.setItem('lastaccess', location.pathname)
+
     const [showPass, setShowPass] = useState(false);
 
     const [nome, setNome] = useState("");

@@ -6,7 +6,16 @@ function Alert({ type = "error", message }) {
 
     return (
         <div
-            className={`min-w-1.5 p-3 rounded-lg text-white border-3 shadow-lg ${styles[type]}`}
+            className={`
+                min-w-2xs
+                p-3
+                rounded-lg
+                text-white
+                border-2
+                shadow-lg
+                animate-[fadeIn_0.3s_ease-out]
+                ${styles[type]}
+            `}
         >
             {message}
         </div>

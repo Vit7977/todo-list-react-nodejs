@@ -123,6 +123,11 @@ const UsuarioController = {
         status: 200,
         msg: "Logado com sucesso!",
         token,
+        user: {
+          id: user.id,
+          nome: user.nome,
+          email: user.email
+        }
       });
     } catch (error) {
       return res.status(500).json({

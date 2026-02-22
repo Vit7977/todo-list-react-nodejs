@@ -1,9 +1,10 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Login from './Pages/Login.jsx';
 import ProtectedRoute from './Pages/ProtectedRoute.jsx';
 import Home from './Pages/Home.jsx';
 import Cadastrar from './Pages/Cadastrar.jsx';
+import NotFound from './Pages/NotFound.jsx';
 
 function App() {
 
@@ -12,17 +13,12 @@ function App() {
   );
 
   return (
+
     <BrowserRouter>
+
       <Routes>
 
-        <Route
-          path='/'
-          element={
-            <ProtectedRoute isAuth={isAuth}>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="*" element={<NotFound />} />
 
         <Route
           path='/login'
@@ -33,6 +29,16 @@ function App() {
           path='/cadastrar'
           element={<Cadastrar />}
         />
+
+        <Route
+          path='/'
+          element={
+            <ProtectedRoute isAuth={isAuth}>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
     </BrowserRouter>
   );

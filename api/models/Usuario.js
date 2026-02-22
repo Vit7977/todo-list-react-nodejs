@@ -39,7 +39,7 @@ const Usuario = {
 
   async authentication(email){
     try{
-      const [user] = await pool.promise().execute(`SELECT id, senha, nome FROM usuario WHERE email = ?`, [email]);
+      const [user] = await pool.promise().execute(`SELECT * FROM usuario WHERE email = ?`, [email]);
 
       return user[0];
     }catch(error){
