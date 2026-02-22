@@ -39,7 +39,7 @@ function Login({ setIsAuth }) {
             setIsAuth(true);
 
             setTimeout(() => {
-                navigate('/', );
+                navigate('/');
             }, 1000);
 
         } catch (error) {
@@ -70,31 +70,48 @@ function Login({ setIsAuth }) {
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
-                    <input
-                        className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-                        type="email"
-                        placeholder="Digite seu email"
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-
-                    <div className="relative">
+                    <div className="flex flex-col gap-2">
+                        <label
+                            className="text-sm text-zinc-300 font-medium"
+                        >
+                            Email
+                        </label>
                         <input
-                            className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition pr-12"
-                            type={showPass ? "text" : "password"}
-                            placeholder="Digite sua senha"
-                            minLength={6}
-                            onChange={(e) => setSenha(e.target.value)}
+                            id="email"
+                            className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                            type="email"
+                            placeholder="Digite seu email"
+                            onChange={(e)=>setEmail(e.target.value)}
                             required
                         />
+                    </div>
 
-                        <button
-                            type="button"
-                            onClick={() => setShowPass(!showPass)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition"
+                    <div className="flex flex-col gap-2">
+                        <label
+                            className="text-sm text-zinc-300 font-medium"
                         >
-                            {showPass ? <FaEyeSlash /> : <FaEye />}
-                        </button>
+                            Senha
+                        </label>
+
+                        <div className="relative">
+                            <input
+                                id="senha"
+                                className="w-full px-4 py-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition pr-12"
+                                type={showPass ? "text" : "password"}
+                                placeholder="Digite sua senha"
+                                minLength={6}
+                                onChange={(e)=>setSenha(e.target.value)}
+                                required
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => setShowPass(!showPass)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition"
+                            >
+                                {showPass ? <FaEyeSlash /> : <FaEye />}
+                            </button>
+                        </div>
                     </div>
 
                     <button
