@@ -1,12 +1,22 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate, Link } from 'react-router-dom';
+import Alert from '../Components/Alert';
 
-function Login() {
+function Login({ setIsAuth }) {
     const [showPass, setShowPass] = useState(false);
 
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
+
+    const [alert, setAlert] = useState({
+        show: false,
+        type: "error",
+        message: ""
+    });
+
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,22 +24,44 @@ function Login() {
         try {
             const response = await axios.post('http://localhost:9090/api/usuario/login', { email, senha })
 
-            const {token} = response.data;
+            const { token } = response.data;
 
             localStorage.setItem('token', token);
 
             console.log("Login realizado com sucesso!");
-            alert("Login realizado com sucesso!");
+
+            setAlert({
+                show: true,
+                type: "success",
+                message: "Login realizado com sucesso!"
+            })
+
+            setIsAuth(true);
+
+            setTimeout(() => {
+                navigate('/', );
+            }, 1000);
 
         } catch (error) {
             console.error(error.message);
 
-            alert("Erro de login!")
+            setAlert({
+                show: true,
+                type: "error",
+                message: "Erro de login!"
+            })
         }
     }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-zinc-900 to-zinc-800">
+
+            {alert.show && (
+                <div className="fixed top-5 right-5 z-50 min-w-2xs shadow-lg animate-slide-in">
+                    <Alert type={alert.type} message={alert.message} />
+                </div>
+            )}
+
             <div className="bg-zinc-900 p-10 rounded-2xl shadow-2xl w-full max-w-md">
 
                 <h1 className="text-3xl font-bold text-white text-center mb-8">
@@ -70,6 +102,19 @@ function Login() {
                         type="submit">
                         Login
                     </button>
+                    <p className="text-center text-zinc-400 text-sm">
+                        Não tem uma conta?{" "}
+                        <Link
+                            to="/cadastrar"
+                            className="relative text-indigo-500 font-medium transition duration-300
+                                after:content-[''] after:absolute after:left-0 after:-bottom-1 
+                                after:w-0 after:h-0.5 after:bg-indigo-500 
+                                after:transition-all after:duration-300
+                                hover:after:w-full"
+                        >
+                            Cadastre-se aqui
+                        </Link>
+                    </p>
                 </form>
             </div>
         </div>
