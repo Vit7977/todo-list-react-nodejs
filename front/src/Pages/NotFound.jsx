@@ -22,7 +22,7 @@ function NotFound() {
                 </p>
 
                 <Link
-                    to="/"
+                    to="/home"
                     className="inline-block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition duration-300 shadow-lg"
                 >
                     Voltar para Home

@@ -5,8 +5,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import Alert from '../Components/Alert';
 
 function Login({ setIsAuth }) {
-    localStorage.setItem('lastaccess', '/login')
-
     const [showPass, setShowPass] = useState(false);
 
     const [email, setEmail] = useState("");
@@ -43,15 +41,20 @@ function Login({ setIsAuth }) {
                 message: "Login realizado com sucesso!"
             })
 
-            setIsAuth(true);
+            setAlert({
+                show: true,
+                type: "success",
+                message: "Login realizado com sucesso!"
+            });
 
             setTimeout(() => {
-                navigate('/');
-            }, 2000);
+                setIsAuth(true);
+                navigate('/home');
+            }, 1500);
 
         } catch (error) {
             const msg =
-                error.response?.data?.msg || "Erro ao cadastrar!";
+                error.response?.data?.msg || "Erro de login!";
 
             setAlert({
                 show: true,

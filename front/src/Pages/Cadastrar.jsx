@@ -5,9 +5,6 @@ import axios from 'axios';
 import Alert from '../Components/Alert';
 
 function Cadastrar() {
-    const location = useLocation();
-    localStorage.setItem('lastaccess', location.pathname)
-
     const [showPass, setShowPass] = useState(false);
 
     const [nome, setNome] = useState("");
