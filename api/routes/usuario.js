@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/", UsuarioController.getUsers);
 
-router.get("/perfil", authToken, (req, res)=>{
+router.get("/auth/validate", authToken, (req, res)=>{
     res.json({
         msg: "Token válido!",
         user: req.user

@@ -1,19 +1,64 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import Login from './Pages/Login.jsx';
 import ProtectedRoute from './Pages/ProtectedRoute.jsx';
 import PublicRoute from './Pages/PublicRoute.jsx';
 import Home from './Pages/Home.jsx';
 import Cadastrar from './Pages/Cadastrar.jsx';
 import NotFound from './Pages/NotFound.jsx';
+import Perfil from './Pages/Perfil.jsx';
 
 function App() {
 
   const lastAccess = localStorage.getItem('lastaccess');
 
-  const [isAuth, setIsAuth] = useState(
-    !!localStorage.getItem("token")
-  );
+  const [isAuth, setIsAuth] = useState(false);
+
+  const validateToken = async () => {
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setIsAuth(false);
+      return;
+    }
+
+    try {
+      await axios.get("http://localhost:9090/api/usuario/auth/validate", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setIsAuth(true);
+
+    } catch (error) {
+      localStorage.removeItem("token");
+      window.location.reload();
+    }
+  }
+
+  useEffect(() => {
+    validateToken()
+  }, [])
+
+  useEffect(() => {
+
+    const handleStorageChange = (event) => {
+      if (event.key === "token") {
+        console.log("Token alterado!");
+
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+
+  }, []);
 
   return (
 
@@ -59,7 +104,14 @@ function App() {
           }
         />
 
-
+        <Route
+          path="/perfil"
+          element={
+            <ProtectedRoute isAuth={isAuth}>
+              <Perfil />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
