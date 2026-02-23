@@ -34,6 +34,8 @@ function App() {
 
     } catch (error) {
       localStorage.removeItem("token");
+      localStorage.removeItem("loggedUsername");
+      localStorage.removeItem("loggedEmail");
       window.location.reload();
     }
   }
