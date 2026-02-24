@@ -126,7 +126,8 @@ const UsuarioController = {
         user: {
           id: user.id,
           nome: user.nome,
-          email: user.email
+          email: user.email,
+          created_at: user.created_at
         }
       });
     } catch (error) {

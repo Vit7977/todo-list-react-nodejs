@@ -28,10 +28,12 @@ function Login({ setIsAuth }) {
 
             const username = response.data.user.nome
             const useremail = response.data.user.email
+            const createdAt = response.data.user.created_at
 
             localStorage.setItem('token', token);
             localStorage.setItem('loggedUsername', username);
             localStorage.setItem('loggedEmail', useremail);
+            localStorage.setItem('userCreateDate', createdAt);
 
             console.log("Login realizado com sucesso!");
 

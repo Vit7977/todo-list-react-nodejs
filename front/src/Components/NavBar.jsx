@@ -2,10 +2,7 @@ import { Link } from "react-router-dom";
 
 function NavBar() {
     const logout = () => {
-        localStorage.removeItem('loggedUsername')
-        localStorage.removeItem('loggedEmail')
-        localStorage.removeItem('token')
-
+        localStorage.clear();
         setTimeout(() => {
             window.location.reload();
         }, 1000);
