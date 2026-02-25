@@ -50,34 +50,33 @@ const TaskController = {
       });
     }
   },
-  async getTasksByUserId(req, res){
-    try{
+  async getTasksByUserId(req, res) {
+    try {
       const id = req.params.id;
 
       const user = await Usuario.getUserById(id);
 
-      if(!user){
+      if (!user) {
         return res.status(404).json({
           status: 404,
-          msg: "Usuário não encontrado!"
-        })
+          msg: "Usuário não encontrado!",
+        });
       }
 
       const tasks = await Tarefa.getTaskByUserId(user.id);
 
-      if(tasks.length <= 0){
+      if (tasks.length <= 0) {
         return res.status(400).json({
-        status: 400,
-        msg: "Este usuario não possui tarefas!"
-      });
+          status: 400,
+          msg: "Este usuario não possui tarefas!",
+        });
       }
 
       return res.status(200).json({
         status: 200,
-        data: tasks
+        data: tasks,
       });
-
-    }catch(error){
+    } catch (error) {
       res.status(500).json({
         status: 500,
         data: error.message,
@@ -156,8 +155,8 @@ const TaskController = {
       return res.status(200).json({
         status: 200,
         msg: "OK",
-        data: result[0]
-      })
+        data: result[0],
+      });
     } catch (error) {
       res.status(500).json({
         status: 500,
@@ -166,34 +165,61 @@ const TaskController = {
     }
   },
 
-  async deleteTask(req, res){
-    try{
-        const id = req.params.id;
+  async deleteTask(req, res) {
+    try {
+      const id = req.params.id;
 
-        const task = await Tarefa.getTaskById(id);
+      const task = await Tarefa.getTaskById(id);
 
-        if(!task){
-            return res.status(400).json({
-                status: 400,
-                msg: "Tarefa não encontrada!"
-            })
-        }
+      if (!task) {
+        return res.status(400).json({
+          status: 400,
+          msg: "Tarefa não encontrada!",
+        });
+      }
 
-        const result = await Tarefa.deleteTask(id);
+      const result = await Tarefa.deleteTask(id);
 
-        return res.status(200).json({
-            status:200,
-            msg: "OK",
-            data: result[0]
-        })
-
-    }catch(error){
-        res.status(500).json({
-            status: 500,
-            data: error.message
-        })
+      return res.status(200).json({
+        status: 200,
+        msg: "OK",
+        data: result[0],
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: 500,
+        data: error.message,
+      });
     }
-  }
+  },
+  async completeTask(req, res) {
+    try {
+      const id = req.params.id;
+
+      const task = await Tarefa.getTaskById(id);
+
+      if(!task){
+        return res.status(404).json({
+          status: 404,
+          msg: "Tarefa não encontrada!"
+        })
+      }
+
+      const result = await Tarefa.completeTask(id);
+
+      return res.status(200).json({
+            status: 500,
+            msg: "Tarefa concluida com sucesso!",
+            result
+        })
+
+    } catch (error) {
+      res.status(500).json({
+        status: 500,
+        data: error.message,
+      });
+    }
+  },
 };
 
 export default TaskController;

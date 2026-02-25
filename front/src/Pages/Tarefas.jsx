@@ -1,14 +1,11 @@
 import axios from "axios";
 import NavBar from "../Components/NavBar";
 import Alert from "../Components/Alert";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 function Tarefas() {
 
-    const navigate = useNavigate();
-
-    const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem('userId')
     const [categorias, setCategorias] = useState([]);
     const [tarefas, setTarefas] = useState([]);
 

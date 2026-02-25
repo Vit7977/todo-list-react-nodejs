@@ -25,7 +25,7 @@ const Tarefa = {
   async getTaskByUserId(userId) {
     try {
       const [tasks] = await pool.promise().execute(
-      `SELECT 
+        `SELECT 
         tarefa.id,
         tarefa.titulo,
         tarefa.descricao,
@@ -83,6 +83,18 @@ const Tarefa = {
       const result = await pool
         .promise()
         .execute(`DELETE FROM tarefa WHERE id = ?`, [id]);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async completeTask(id) {
+    try {
+      const result = await pool
+        .promise()
+        .execute(`UPDATE tarefa SET concluido=1 WHERE id=?`, [id]);
+
       return result;
     } catch (error) {
       throw error;
