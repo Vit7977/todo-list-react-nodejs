@@ -22,6 +22,33 @@ const Tarefa = {
     }
   },
 
+  async getTaskByUserId(userId) {
+    try {
+      const [tasks] = await pool.promise().execute(
+      `SELECT 
+        tarefa.id,
+        tarefa.titulo,
+        tarefa.descricao,
+        tarefa.concluido,
+        tarefa.prioridade,
+        tarefa.categoria,
+        tarefa.usuario,
+        tarefa.created_at,
+        tarefa.updated_at,
+        categoria.nome AS categoriaNome
+    FROM tarefa
+    INNER JOIN categoria 
+        ON tarefa.categoria = categoria.id
+    WHERE tarefa.usuario = ?`,
+        [userId],
+      );
+
+      return tasks;
+    } catch (error) {
+      throw error;
+    }
+  },
+
   async addTask(titulo, desc, categoriaId, usuarioId) {
     try {
       const result = await pool
@@ -37,27 +64,13 @@ const Tarefa = {
     }
   },
 
-  async updateTask(
-    titulo,
-    desc,
-    concluido,
-    prioridade,
-    categoriaId,
-    id,
-  ) {
+  async updateTask(titulo, desc, concluido, prioridade, categoriaId, id) {
     try {
       const result = await pool
         .promise()
         .execute(
           `UPDATE tarefa SET titulo=?, descricao=?, concluido=?, prioridade=?, categoria=? WHERE id=?`,
-          [
-            titulo,
-            desc ?? null,
-            concluido,
-            prioridade,
-            categoriaId,
-            id,
-          ],
+          [titulo, desc ?? null, concluido, prioridade, categoriaId, id],
         );
 
       return result;

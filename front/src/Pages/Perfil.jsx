@@ -1,11 +1,7 @@
-import { useLocation } from "react-router-dom";
 import { FaUser, FaEnvelope, FaCalendarAlt } from "react-icons/fa";
 import NavBar from "../Components/NavBar";
 
 function Perfil() {
-    const location = useLocation();
-    localStorage.setItem('lastaccess', location.pathname);
-
     const username = localStorage.getItem('loggedUsername');
     const email = localStorage.getItem('loggedEmail');
     const createdAt = localStorage.getItem('userCreateDate');

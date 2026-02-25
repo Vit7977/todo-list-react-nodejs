@@ -1,10 +1,6 @@
-import { useLocation } from "react-router-dom";
 import NavBar from "../Components/NavBar";
 
 function Home() {
-    const location = useLocation();
-    localStorage.setItem('lastaccess', location.pathname)
-
     const username = localStorage.getItem('loggedUsername');
 
     return (

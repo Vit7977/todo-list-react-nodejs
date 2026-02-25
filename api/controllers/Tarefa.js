@@ -1,4 +1,5 @@
 import Tarefa from "../models/Tarefa.js";
+import Usuario from "../models/usuario.js";
 
 const TaskController = {
   async getTasks(_, res) {
@@ -49,6 +50,41 @@ const TaskController = {
       });
     }
   },
+  async getTasksByUserId(req, res){
+    try{
+      const id = req.params.id;
+
+      const user = await Usuario.getUserById(id);
+
+      if(!user){
+        return res.status(404).json({
+          status: 404,
+          msg: "Usuário não encontrado!"
+        })
+      }
+
+      const tasks = await Tarefa.getTaskByUserId(user.id);
+
+      if(tasks.length <= 0){
+        return res.status(400).json({
+        status: 400,
+        msg: "Este usuario não possui tarefas!"
+      });
+      }
+
+      return res.status(200).json({
+        status: 200,
+        data: tasks
+      });
+
+    }catch(error){
+      res.status(500).json({
+        status: 500,
+        data: error.message,
+      });
+    }
+  },
+
   async addTask(req, res) {
     try {
       const { titulo, descricao, categoria, usuario } = req.body;

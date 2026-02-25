@@ -1,9 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function NotFound() {
-    const location = useLocation();
-    localStorage.setItem('lastaccess', location.pathname)
-
     return (
         <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-zinc-900 to-zinc-800">
 

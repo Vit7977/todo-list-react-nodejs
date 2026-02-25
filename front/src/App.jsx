@@ -8,10 +8,9 @@ import Home from './Pages/Home.jsx';
 import Cadastrar from './Pages/Cadastrar.jsx';
 import NotFound from './Pages/NotFound.jsx';
 import Perfil from './Pages/Perfil.jsx';
+import Tarefas from './Pages/Tarefas.jsx';
 
 function App() {
-
-  const lastAccess = localStorage.getItem('lastaccess');
 
   const [isAuth, setIsAuth] = useState(false);
 
@@ -68,16 +67,17 @@ function App() {
 
       <Routes>
 
-        <Route path="*" element={<NotFound />} />
-
         <Route
           path="/"
           element={
             isAuth
-              ? <Navigate to={lastAccess || "/home"} replace />
+              ? <Navigate to="/home" replace />
               : <Navigate to="/login" replace />
           }
         />
+
+        <Route path="*" element={<NotFound />} />
+
 
         <Route
           path="/login"
@@ -111,6 +111,15 @@ function App() {
           element={
             <ProtectedRoute isAuth={isAuth}>
               <Perfil />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/tarefas"
+          element={
+            <ProtectedRoute isAuth={isAuth}>
+              <Tarefas />
             </ProtectedRoute>
           }
         />
