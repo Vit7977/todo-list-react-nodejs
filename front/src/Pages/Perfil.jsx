@@ -1,13 +1,37 @@
 import { FaUser, FaEnvelope, FaCalendarAlt } from "react-icons/fa";
 import NavBar from "../Components/NavBar";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import UpdateUserForm from "../Components/UpdateUserForm";
 
 function Perfil() {
-    const username = localStorage.getItem('loggedUsername');
-    const email = localStorage.getItem('loggedEmail');
-    const createdAt = localStorage.getItem('userCreateDate');
+    const [openModal, setOpenModal] = useState(false);
 
-    const formattedDate = createdAt
-        ? new Date(createdAt).toLocaleDateString('pt-BR', {
+    const [user, setUser] = useState({ nome: "", email: "", createdAt: "" })
+    const id = localStorage.getItem('userId');
+
+    const getUser = async () => {
+        try {
+            const result = await axios.get(
+                `http://localhost:9090/api/usuario/${id}`
+            );
+
+            setUser({
+                nome: result.data.data.nome,
+                email: result.data.data.email,
+                createdAt: result.data.data.created_at
+            })
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    useEffect(() => {
+        getUser();
+    }, [])
+
+    const formattedDate = user.createdAt
+        ? new Date(user.createdAt).toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: 'long',
             year: 'numeric'
@@ -41,7 +65,7 @@ function Perfil() {
                     <div className="bg-linear-to-r from-indigo-600 to-indigo-500 h-32 relative">
                         <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2">
                             <div className="w-28 h-28 rounded-full bg-zinc-900 border-4 border-indigo-500 flex items-center justify-center text-4xl font-bold text-white shadow-lg">
-                                {username?.charAt(0).toUpperCase()}
+                                {user.nome ? user.nome?.charAt(0).toUpperCase() : "U"}
                             </div>
                         </div>
                     </div>
@@ -50,7 +74,7 @@ function Perfil() {
 
                         <div className="text-center">
                             <h2 className="text-2xl font-bold text-white">
-                                {username}
+                                {user.nome}
                             </h2>
                             <p className="text-zinc-400 text-sm mt-1">
                                 Usuário ativo
@@ -63,7 +87,7 @@ function Perfil() {
                                 <FaUser className="text-indigo-400 text-xl" />
                                 <div>
                                     <p className="text-zinc-400 text-sm">Usuário</p>
-                                    <p className="text-white font-semibold">{username}</p>
+                                    <p className="text-white font-semibold">{user.nome}</p>
                                 </div>
                             </div>
 
@@ -71,7 +95,7 @@ function Perfil() {
                                 <FaEnvelope className="text-indigo-400 text-xl" />
                                 <div>
                                     <p className="text-zinc-400 text-sm">Email</p>
-                                    <p className="text-white font-semibold">{email}</p>
+                                    <p className="text-white font-semibold">{user.email}</p>
                                 </div>
                             </div>
 
@@ -86,9 +110,12 @@ function Perfil() {
                         </div>
 
                         <div className="flex flex-col md:flex-row justify-center gap-4 mt-12">
-                            <button className="bg-indigo-600 hover:bg-indigo-700 transition duration-300 text-white px-8 py-3 rounded-xl font-semibold shadow-lg">
+                            <button onClick={()=> setOpenModal(true)}
+                            className="bg-indigo-600 hover:bg-indigo-700 transition duration-300 text-white px-8 py-3 rounded-xl font-semibold shadow-lg">
                                 Editar Perfil
                             </button>
+
+                            {openModal && <UpdateUserForm closeModal={() => setOpenModal(false)} />}
 
                             <button onClick={logout} className="bg-red-600 hover:bg-red-700 transition duration-300 text-white px-8 py-3 rounded-xl font-semibold shadow-lg">
                                 Sair

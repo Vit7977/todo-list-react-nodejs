@@ -4,7 +4,6 @@ import CardTarefa from "../Components/CardTarefa";
 import NavBar from "../Components/NavBar";
 
 function Home() {
-
     const [tarefas, setTarefas] = useState([])
 
     const total = tarefas.length;
@@ -12,6 +11,26 @@ function Home() {
     const pendentes = tarefas.filter(t => !t.concluido).length;
 
     const userId = localStorage.getItem('userId');
+
+    const [user, setUser] = useState({ nome: ""})
+
+    const getUser = async () => {
+        try {
+            const result = await axios.get(
+                `http://localhost:9090/api/usuario/${userId}`
+            );
+
+            setUser({
+                nome: result.data.data.nome,
+            })
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    useEffect(() => {
+        getUser();
+    }, [])
 
     const getTarefas = async () => {
         try {
@@ -48,14 +67,12 @@ function Home() {
         }
     }
 
-    const username = localStorage.getItem('loggedUsername');
-
     return (
         <div className="min-h-screen bg-linear-to-r from-zinc-900 to-zinc-800">
             <NavBar />
             <div className="px-8 py-6">
                 <h1 className="text-3xl font-bold text-white">
-                    Olá, {username} 👋
+                    Olá, {user.nome} 👋
                 </h1>
                 <p className="text-zinc-400 mt-2">
                     Organize suas tarefas e aumente sua produtividade.

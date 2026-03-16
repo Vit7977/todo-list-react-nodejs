@@ -116,14 +116,13 @@ const TaskController = {
   },
   async updateTask(req, res) {
     try {
-      const { titulo, descricao, concluido, prioridade, categoria, usuario } =
+      const { titulo, descricao, prioridade, categoria, usuario } =
         req.body;
       const id = req.params.id;
 
       if (
         !titulo &&
         !descricao &&
-        !concluido &&
         !prioridade &&
         !categoria &&
         !usuario

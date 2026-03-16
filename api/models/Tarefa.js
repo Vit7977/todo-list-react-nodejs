@@ -64,13 +64,13 @@ const Tarefa = {
     }
   },
 
-  async updateTask(titulo, desc, concluido, prioridade, categoriaId, id) {
+  async updateTask(titulo, desc, prioridade, categoriaId, id) {
     try {
       const result = await pool
         .promise()
         .execute(
-          `UPDATE tarefa SET titulo=?, descricao=?, concluido=?, prioridade=?, categoria=? WHERE id=?`,
-          [titulo, desc ?? null, concluido, prioridade, categoriaId, id],
+          `UPDATE tarefa SET titulo=?, descricao=?, prioridade=?, categoria=? WHERE id=?`,
+          [titulo, desc ?? null, prioridade, categoriaId, id],
         );
 
       return result;
