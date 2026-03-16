@@ -145,7 +145,6 @@ const TaskController = {
       const result = await Tarefa.updateTask(
         titulo ?? task.titulo,
         descricao,
-        concluido ?? 0,
         prioridade ?? task.prioridade,
         categoria ?? task.categoria,
         id,

@@ -1,7 +1,6 @@
 import { FaEdit, FaTrash, FaCheck } from 'react-icons/fa'
 
-function CardTarefa({ titulo, concluido, prioridade, categoria, onComplete, onDelete }) {
-
+function CardTarefa({ titulo, concluido, prioridade, categoria, onComplete, onDelete, onEdit }) {
     const prioridadeConfig = {
         BAIXA: {
             bg: "bg-green-500/20",
@@ -110,6 +109,7 @@ function CardTarefa({ titulo, concluido, prioridade, categoria, onComplete, onDe
                     </button>
 
                     <button
+                        onClick={onEdit}
                         className={`
                             p-2 rounded-lg
                             bg-zinc-800

@@ -2,9 +2,17 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import CardTarefa from "../Components/CardTarefa";
 import NavBar from "../Components/NavBar";
+import UpdateTaskForm from "../Components/UpdateTaskForm";
 
 function Home() {
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedTask, setSelectedTask] = useState(null);
     const [tarefas, setTarefas] = useState([])
+
+    const openEditModal = (task) => {
+        setSelectedTask(task);
+        setOpenModal(true);
+    };
 
     const total = tarefas.length;
     const concluidas = tarefas.filter(t => t.concluido).length;
@@ -12,7 +20,7 @@ function Home() {
 
     const userId = localStorage.getItem('userId');
 
-    const [user, setUser] = useState({ nome: ""})
+    const [user, setUser] = useState({ nome: "" })
 
     const getUser = async () => {
         try {
@@ -105,16 +113,26 @@ function Home() {
                     tarefas.map(tarefa => (
                         <CardTarefa
                             key={tarefa.id}
+                            id={tarefa.id}
                             titulo={tarefa.titulo}
                             concluido={tarefa.concluido}
                             prioridade={tarefa.prioridade}
                             categoria={tarefa.categoriaNome}
                             onComplete={() => completeTask(tarefa.id)}
                             onDelete={() => handleDelete(tarefa.id)}
+                            onEdit={() => openEditModal(tarefa.id)}
                         />
                     ))
                 }
-
+                {
+                    openModal && (
+                        <UpdateTaskForm
+                            taskId={selectedTask}
+                            closeModal={() => setOpenModal(false)}
+                            refreshTasks={getTarefas}
+                        />
+                    )
+                }
             </div>
         </div>
     );
